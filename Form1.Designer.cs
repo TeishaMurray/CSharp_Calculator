@@ -48,6 +48,9 @@
             this.decimalBtn = new System.Windows.Forms.Button();
             this.deleteBtn = new System.Windows.Forms.Button();
             this.addBtn = new System.Windows.Forms.Button();
+            this.posNegBtn = new System.Windows.Forms.Button();
+            this.expressionCache = new System.Windows.Forms.TextBox();
+            this.errorsDisplay = new System.Windows.Forms.TextBox();
             this.tableLayoutPanel1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -61,7 +64,7 @@
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 20F));
             this.tableLayoutPanel1.Controls.Add(this.zeroBtn, 0, 3);
             this.tableLayoutPanel1.Controls.Add(this.decimalBtn, 1, 3);
-            this.tableLayoutPanel1.Controls.Add(this.deleteBtn, 2, 3);
+            this.tableLayoutPanel1.Controls.Add(this.deleteBtn, 3, 1);
             this.tableLayoutPanel1.Controls.Add(this.addBtn, 3, 3);
             this.tableLayoutPanel1.Controls.Add(this.oneBtn, 0, 2);
             this.tableLayoutPanel1.Controls.Add(this.twoBtn, 1, 2);
@@ -77,13 +80,15 @@
             this.tableLayoutPanel1.Controls.Add(this.nineBtn, 2, 0);
             this.tableLayoutPanel1.Controls.Add(this.eightBtn, 1, 0);
             this.tableLayoutPanel1.Controls.Add(this.sevenBtn, 0, 0);
-            this.tableLayoutPanel1.Location = new System.Drawing.Point(12, 263);
+            this.tableLayoutPanel1.Controls.Add(this.posNegBtn, 2, 3);
+            this.tableLayoutPanel1.Location = new System.Drawing.Point(12, 231);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 4;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tableLayoutPanel1.Size = new System.Drawing.Size(1084, 590);
             this.tableLayoutPanel1.TabIndex = 0;
             // 
@@ -92,7 +97,7 @@
             this.textBox1.AccessibleDescription = "Display Field";
             this.textBox1.AccessibleName = "displayField";
             this.textBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 40F);
-            this.textBox1.Location = new System.Drawing.Point(12, 56);
+            this.textBox1.Location = new System.Drawing.Point(12, 26);
             this.textBox1.Name = "textBox1";
             this.textBox1.Size = new System.Drawing.Size(1084, 143);
             this.textBox1.TabIndex = 1;
@@ -155,7 +160,7 @@
             this.divideBtn.TabIndex = 3;
             this.divideBtn.Text = "/";
             this.divideBtn.UseVisualStyleBackColor = true;
-            this.divideBtn.Click += new System.EventHandler(this.btnClick);
+            this.divideBtn.Click += new System.EventHandler(this.operationBtn_Click);
             // 
             // clearBtn
             // 
@@ -166,8 +171,7 @@
             this.clearBtn.Location = new System.Drawing.Point(871, 7);
             this.clearBtn.Margin = new System.Windows.Forms.Padding(7);
             this.clearBtn.Name = "clearBtn";
-            this.tableLayoutPanel1.SetRowSpan(this.clearBtn, 2);
-            this.clearBtn.Size = new System.Drawing.Size(206, 280);
+            this.clearBtn.Size = new System.Drawing.Size(206, 133);
             this.clearBtn.TabIndex = 4;
             this.clearBtn.Text = "CLEAR";
             this.clearBtn.UseVisualStyleBackColor = true;
@@ -231,7 +235,7 @@
             this.multiplyBtn.TabIndex = 6;
             this.multiplyBtn.Text = "*";
             this.multiplyBtn.UseVisualStyleBackColor = true;
-            this.multiplyBtn.Click += new System.EventHandler(this.btnClick);
+            this.multiplyBtn.Click += new System.EventHandler(this.operationBtn_Click);
             // 
             // oneBtn
             // 
@@ -291,7 +295,7 @@
             this.minusBtn.TabIndex = 11;
             this.minusBtn.Text = "-";
             this.minusBtn.UseVisualStyleBackColor = true;
-            this.minusBtn.Click += new System.EventHandler(this.btnClick);
+            this.minusBtn.Click += new System.EventHandler(this.operationBtn_Click);
             // 
             // equalsBtn
             // 
@@ -345,13 +349,14 @@
             this.deleteBtn.AccessibleName = "delete";
             this.deleteBtn.Dock = System.Windows.Forms.DockStyle.Fill;
             this.deleteBtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Bold);
-            this.deleteBtn.Location = new System.Drawing.Point(439, 448);
+            this.deleteBtn.Location = new System.Drawing.Point(871, 154);
             this.deleteBtn.Margin = new System.Windows.Forms.Padding(7);
             this.deleteBtn.Name = "deleteBtn";
-            this.deleteBtn.Size = new System.Drawing.Size(202, 135);
+            this.deleteBtn.Size = new System.Drawing.Size(206, 133);
             this.deleteBtn.TabIndex = 17;
             this.deleteBtn.Text = "Delete";
             this.deleteBtn.UseVisualStyleBackColor = true;
+            this.deleteBtn.Click += new System.EventHandler(this.backClick);
             // 
             // addBtn
             // 
@@ -366,13 +371,51 @@
             this.addBtn.TabIndex = 16;
             this.addBtn.Text = "+";
             this.addBtn.UseVisualStyleBackColor = true;
-            this.addBtn.Click += new System.EventHandler(this.btnClick);
+            this.addBtn.Click += new System.EventHandler(this.operationBtn_Click);
+            // 
+            // posNegBtn
+            // 
+            this.posNegBtn.AccessibleDescription = "Positive Negative Button";
+            this.posNegBtn.AccessibleName = "positiveNegativeBtn";
+            this.posNegBtn.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.posNegBtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Bold);
+            this.posNegBtn.Location = new System.Drawing.Point(439, 448);
+            this.posNegBtn.Margin = new System.Windows.Forms.Padding(7);
+            this.posNegBtn.Name = "posNegBtn";
+            this.posNegBtn.Size = new System.Drawing.Size(202, 135);
+            this.posNegBtn.TabIndex = 20;
+            this.posNegBtn.Text = "+/-";
+            this.posNegBtn.UseVisualStyleBackColor = true;
+            // 
+            // expressionCache
+            // 
+            this.expressionCache.AccessibleDescription = "Expression Cache";
+            this.expressionCache.AccessibleName = "expressionCache";
+            this.expressionCache.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
+            this.expressionCache.Location = new System.Drawing.Point(12, 166);
+            this.expressionCache.Name = "expressionCache";
+            this.expressionCache.Size = new System.Drawing.Size(1084, 48);
+            this.expressionCache.TabIndex = 2;
+            // 
+            // errorsDisplay
+            // 
+            this.errorsDisplay.AccessibleDescription = "Error Display Screen";
+            this.errorsDisplay.AccessibleName = "errorsDisplay";
+            this.errorsDisplay.BackColor = System.Drawing.SystemColors.Control;
+            this.errorsDisplay.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.errorsDisplay.ForeColor = System.Drawing.SystemColors.WindowText;
+            this.errorsDisplay.Location = new System.Drawing.Point(19, 827);
+            this.errorsDisplay.Name = "errorsDisplay";
+            this.errorsDisplay.Size = new System.Drawing.Size(850, 28);
+            this.errorsDisplay.TabIndex = 3;
             // 
             // calcForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(14F, 29F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1114, 874);
+            this.Controls.Add(this.errorsDisplay);
+            this.Controls.Add(this.expressionCache);
             this.Controls.Add(this.textBox1);
             this.Controls.Add(this.tableLayoutPanel1);
             this.Name = "calcForm";
@@ -406,6 +449,9 @@
         private System.Windows.Forms.Button eightBtn;
         private System.Windows.Forms.Button sevenBtn;
         private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.Button posNegBtn;
+        private System.Windows.Forms.TextBox expressionCache;
+        private System.Windows.Forms.TextBox errorsDisplay;
     }
 }
 
